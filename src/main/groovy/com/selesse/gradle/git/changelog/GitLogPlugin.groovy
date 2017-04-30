@@ -25,32 +25,6 @@ class GitLogPlugin implements Plugin<Project> {
             }
 
             logger.info("Initialized with settings: ${extension}")
-
-            project.plugins.withType(JavaPlugin) {
-                logger.info("Configuring Java plugin")
-                Task processResources = project.tasks.processResources
-
-                if (processResources != null) {
-                    logger.debug("Making assembleTask depend on ${task.name}")
-                    processResources.dependsOn(task)
-
-                    if (!outputDirectoryWasSpecified) {
-                        logger.debug("Setting destination directory to {}", processResources.destinationDir)
-                        project.changelog.outputDirectory = processResources.destinationDir
-                    }
-                }
-            }
-
-            if (project.plugins.findPlugin(JavaPlugin) == null) {
-                project.plugins.withType(BasePlugin) {
-                    logger.debug("Configuring Base Plugin")
-                    Task assembleTask = project.tasks.getByName("assemble") as Task
-                    if (assembleTask != null) {
-                        logger.debug("Making assembleTask depend on ${task.name}")
-                        assembleTask.dependsOn(task)
-                    }
-                }
-            }
         })
 
     }

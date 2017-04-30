@@ -14,23 +14,6 @@ class GitLogJavaFunctionalTest extends Specification {
         buildFile = testProjectDir.newFile('build.gradle')
     }
 
-    def "when using java plugin, and output directory is unspecified, defaults to 'build/resources/main'"() {
-        given:
-        buildFile << """
-            plugins {
-                id 'java'
-                id 'com.selesse.git.changelog'
-            }
-        """
-
-        when:
-        def result = ProjectRunner.buildGenerateChangelog(testProjectDir.root)
-
-        then:
-        new File(testProjectDir.root, "build/resources/main/CHANGELOG.md").isFile()
-        result.task(":generateChangelog").outcome == SUCCESS
-    }
-
     def "when using java plugin, and output directory is specified, it can be customized"() {
         given:
         buildFile << """
